@@ -1,24 +1,14 @@
-"use client";
 import React from "react";
+import prismadb from "@/lib/prismadb";
 
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
+import CategoryTable from "./components/CategoryTable";
 
-import TableElement from "./components/TableElement";
-import { useRouter } from "next/navigation";
+const Categories = async () => {
+  const categories = await prismadb.category.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
-const Categories = () => {
-  const router = useRouter();
-
-  return (
-    <div className="md:mt-10 flex flex-col w-full h-[5rem] gap-5">
-      <div className=" flex items-center justify-between">
-        <Heading title="Categories" description="Manage your categories." />
-        <Button onClick={() => router.push(`/categories/new`)}>Add +</Button>
-      </div>
-      <TableElement />
-    </div>
-  );
+  return <CategoryTable data={categories} />;
 };
 
 export default Categories;

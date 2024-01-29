@@ -51,6 +51,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     try {
       setIsLoading(true);
       if (initialData) {
+        await axios.patch(`/api/categories/${initialData.id}`, data);
       } else {
         await axios.post("/api/categories", data);
       }
