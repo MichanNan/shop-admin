@@ -14,12 +14,14 @@ import { useRouter } from "next/navigation";
 import { Category } from "@prisma/client";
 import toast from "react-hot-toast";
 import axios from "axios";
+import AlertModal from "./Modal";
 
 interface TableElementProps {
   data: Category[] | null;
 }
 const TableElement: React.FC<TableElementProps> = ({ data }) => {
   const [isLoading, setIsloading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -36,6 +38,7 @@ const TableElement: React.FC<TableElementProps> = ({ data }) => {
       );
     } finally {
       setIsloading(false);
+      setIsOpen(false);
     }
   };
   return (
@@ -50,27 +53,37 @@ const TableElement: React.FC<TableElementProps> = ({ data }) => {
       </TableHeader>
       <TableBody>
         {data?.map((item) => (
-          <TableRow key={item.id} className="text-center">
-            <TableCell className="font-medium">{item.name}</TableCell>
-            <TableCell>2023-01-01</TableCell>
-            <TableCell className="flex gap-2 justify-center">
-              <Button
-                variant="outline"
-                className="h-8"
-                onClick={() => router.push(`/categories/${item.id}`)}
-              >
-                update
-              </Button>
-              <Button
-                disabled={isLoading}
-                variant="destructive"
-                className="h-8"
-                onClick={() => onDelete(item.id)}
-              >
-                delete
-              </Button>
-            </TableCell>
-          </TableRow>
+          <>
+            <AlertModal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              title="Are you sure to delete the categery?"
+              description="This action cannot be undone."
+              onClose={() => setIsOpen(false)}
+              onConfirm={() => onDelete(item.id)}
+            />
+            <TableRow key={item.id} className="text-center">
+              <TableCell className="font-medium">{item.name}</TableCell>
+              <TableCell>2023-01-01</TableCell>
+              <TableCell className="flex gap-2 justify-center">
+                <Button
+                  variant="outline"
+                  className="h-8"
+                  onClick={() => router.push(`/categories/${item.id}`)}
+                >
+                  update
+                </Button>
+                <Button
+                  disabled={isLoading}
+                  variant="destructive"
+                  className="h-8"
+                  onClick={() => setIsOpen(true)}
+                >
+                  delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          </>
         ))}
       </TableBody>
     </Table>

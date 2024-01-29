@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import AlertModal from "@/components/Modal";
 
 const formSchema = z.object({
   name: z.string().min(1),
