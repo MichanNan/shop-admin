@@ -48,7 +48,7 @@ const AlertModal: React.FC<AlterModalProps> = ({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="flex w-full justify-evenly">
+        <div className="flex w-full gap-3 justify-evenly">
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
