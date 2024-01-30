@@ -9,11 +9,11 @@ import TableElement from "@/components/TableElement";
 import { Color } from "@prisma/client";
 import { Separator } from "@/components/ui/separator";
 
-interface SizeTableProps {
+interface ColorTableProps {
   data: Color[] | null;
 }
 
-const ColorTable: React.FC<SizeTableProps> = ({ data }) => {
+const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
   const router = useRouter();
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">

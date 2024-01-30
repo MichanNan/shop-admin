@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -9,21 +9,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Category, Size } from "@prisma/client";
-import toast from "react-hot-toast";
-import axios from "axios";
 import AlertModal from "./Modal";
+import { Button } from "@/components/ui/button";
+import { Category, Color, Product, Size } from "@prisma/client";
+
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { format } from "date-fns";
+import axios from "axios";
 
 interface TableElementProps {
   title: string;
-  data: Category[] | Size[] | null;
+  data: Category[] | Size[] | Color[] | Product[] | null;
 }
 const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
   const [isLoading, setIsloading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [toDeletedItem, setToDeletedItem] = useState("");
+  const [dataIsProduct, setDataIsProduct] = useState(false);
   const router = useRouter();
 
   const onDelete = async (id: string) => {
@@ -40,6 +43,16 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
       setIsOpen(false);
     }
   };
+
+  function isProductData(data: any): data is Product[] {
+    return Array.isArray(data) && data.length > 0 && "price" in data[0];
+  }
+  useEffect(() => {
+    if (isProductData(data)) {
+      setDataIsProduct(true);
+    } else setDataIsProduct(false);
+  }, []);
+
   return (
     <>
       <AlertModal
@@ -55,6 +68,9 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
         <TableHeader className="text-center">
           <TableRow>
             <TableHead className="text-center">{title}</TableHead>
+            {dataIsProduct && (
+              <TableHead className="text-center">Price</TableHead>
+            )}
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Actions</TableHead>
           </TableRow>
@@ -63,7 +79,10 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
           {data?.map((item) => (
             <TableRow key={item.id} className="text-center">
               <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell>2023-01-01</TableCell>
+              {dataIsProduct && (
+                <TableCell>{(item as Product).price}</TableCell>
+              )}
+              <TableCell>{format(item.createdAt, "MMMM do, yyyy")}</TableCell>
               <TableCell className="flex gap-2 justify-center">
                 <Button
                   variant="outline"
