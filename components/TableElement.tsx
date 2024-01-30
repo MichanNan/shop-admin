@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import AlertModal from "./Modal";
 import { Button } from "@/components/ui/button";
-import { Category, Color, Product, Size } from "@prisma/client";
+import { Category, Color, Order, Product, Size } from "@prisma/client";
 
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -20,13 +20,14 @@ import axios from "axios";
 
 interface TableElementProps {
   title: string;
-  data: Category[] | Size[] | Color[] | Product[] | null;
+  data: Category[] | Size[] | Color[] | Product[] | Order[] | null;
 }
 const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
   const [isLoading, setIsloading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [toDeletedItem, setToDeletedItem] = useState("");
   const [dataIsProduct, setDataIsProduct] = useState(false);
+  const [dataIsOrder, setDataIsOrder] = useState(false);
   const router = useRouter();
 
   const onDelete = async (id: string) => {
@@ -44,13 +45,15 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
     }
   };
 
-  function isProductData(data: any): data is Product[] {
-    return Array.isArray(data) && data.length > 0 && "price" in data[0];
-  }
   useEffect(() => {
-    if (isProductData(data)) {
+    if (title === "products") {
       setDataIsProduct(true);
-    } else setDataIsProduct(false);
+    } else if (title === "orders") {
+      setDataIsOrder(true);
+    } else {
+      setDataIsProduct(false);
+      setDataIsOrder(false);
+    }
   }, []);
 
   return (
@@ -72,36 +75,49 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
               <TableHead className="text-center">Price</TableHead>
             )}
             <TableHead className="text-center">Date</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
+            {dataIsOrder && (
+              <TableHead className="text-center">isPaid</TableHead>
+            )}
+            {!dataIsOrder && (
+              <TableHead className="text-center">Actions</TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
           {data?.map((item) => (
             <TableRow key={item.id} className="text-center">
-              <TableCell className="font-medium">{item.name}</TableCell>
+              <TableCell className="font-medium">
+                {!dataIsOrder &&
+                  (item as Product | Category | Size | Color).name}
+                {dataIsOrder && item.id}
+              </TableCell>
               {dataIsProduct && (
                 <TableCell>{(item as Product).price}</TableCell>
               )}
               <TableCell>{format(item.createdAt, "MMMM do, yyyy")}</TableCell>
               <TableCell className="flex gap-2 justify-center">
-                <Button
-                  variant="outline"
-                  className="h-8"
-                  onClick={() => router.push(`/${title}/${item.id}`)}
-                >
-                  update
-                </Button>
-                <Button
-                  disabled={isLoading}
-                  variant="destructive"
-                  className="h-8"
-                  onClick={() => {
-                    setIsOpen(true);
-                    setToDeletedItem(item.id);
-                  }}
-                >
-                  delete
-                </Button>
+                {!dataIsOrder && (
+                  <Button
+                    variant="outline"
+                    className="h-8"
+                    onClick={() => router.push(`/${title}/${item.id}`)}
+                  >
+                    update
+                  </Button>
+                )}
+                {!dataIsOrder && (
+                  <Button
+                    disabled={isLoading}
+                    variant="destructive"
+                    className="h-8"
+                    onClick={() => {
+                      setIsOpen(true);
+                      setToDeletedItem(item.id);
+                    }}
+                  >
+                    delete
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

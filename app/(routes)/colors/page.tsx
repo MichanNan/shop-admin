@@ -2,7 +2,7 @@ import React from "react";
 import prismadb from "@/lib/prismadb";
 import ColorTable from "./components/ColorTable";
 
-const Sizes = async () => {
+const Colors = async () => {
   const colors = await prismadb.color.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -10,4 +10,4 @@ const Sizes = async () => {
   return <ColorTable data={colors} />;
 };
 
-export default Sizes;
+export default Colors;
