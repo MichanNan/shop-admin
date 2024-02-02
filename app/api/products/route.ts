@@ -2,6 +2,24 @@ import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 import { getServerSession } from "next-auth";
 
+export async function GET() {
+  try {
+    const session = getServerSession();
+    if (!session) {
+      return new NextResponse("Please login first!");
+    }
+    const products = await prismadb.product.findMany({
+      include: {
+        images: true,
+      },
+    });
+    return NextResponse.json(products);
+  } catch (error) {
+    console.log("[PRODUCTS_GET]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const session = getServerSession();
