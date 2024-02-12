@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 import {
@@ -17,6 +19,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import axios from "axios";
+import OrderDetail from "./OrderDetail";
 
 interface TableElementProps {
   title: string;
@@ -56,6 +59,14 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
     }
   }, []);
 
+  function truncateString(str: string, maxLength: number) {
+    if (str.length <= maxLength) {
+      return str;
+    } else {
+      return str.slice(0, maxLength) + "...";
+    }
+  }
+
   return (
     <>
       <AlertModal
@@ -74,10 +85,8 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
             {dataIsProduct && (
               <TableHead className="text-center">Price</TableHead>
             )}
+
             <TableHead className="text-center">Date</TableHead>
-            {dataIsOrder && (
-              <TableHead className="text-center">isPaid</TableHead>
-            )}
             {!dataIsOrder && (
               <TableHead className="text-center">Actions</TableHead>
             )}
@@ -89,12 +98,18 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
               <TableCell className="font-medium">
                 {!dataIsOrder &&
                   (item as Product | Category | Size | Color).name}
-                {dataIsOrder && item.id}
+                {dataIsOrder && truncateString(item.id, 8)}
               </TableCell>
               {dataIsProduct && (
                 <TableCell>{(item as Product).price}</TableCell>
               )}
+
               <TableCell>{format(item.createdAt, "MMMM do, yyyy")}</TableCell>
+              <TableCell>
+                <Button onClick={() => router.push(`/orders/${item.id}`)}>
+                  details
+                </Button>
+              </TableCell>
               <TableCell className="flex gap-2 justify-center">
                 {!dataIsOrder && (
                   <Button

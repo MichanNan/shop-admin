@@ -12,6 +12,7 @@ const Orders = async () => {
     redirect("/sign-in");
   }
   const orders = await prismadb.order.findMany({
+    include: { orderItems: true },
     orderBy: { createdAt: "desc" },
   });
 

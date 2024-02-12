@@ -8,3 +8,13 @@ export const getTotalOrders = async () => {
   });
   return ordersCount;
 };
+
+export const getOrders = async (id: string) => {
+  const order = await prismadb.order.findUnique({
+    where: { id: id },
+    include: {
+      orderItems: { include: { product: { include: { images: true } } } },
+    },
+  });
+  return order;
+};
