@@ -14,6 +14,7 @@ export async function GET(
       where: {
         id: params.productId,
       },
+      include: { images: true, color: true, size: true, category: true },
     });
     return NextResponse.json(product);
   } catch (error) {

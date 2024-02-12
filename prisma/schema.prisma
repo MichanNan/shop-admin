@@ -81,7 +81,9 @@ orderItems OrderItem[]
 
  model Order {
    id String @id @default(auto()) @map("_id") @db.ObjectId
-   orderItem OrderItem[]
+   orderItems OrderItem[]
+   clientId String @db.ObjectId
+   client Client @relation (fields: [clientId], references: [id]) 
    isPaid Boolean
    phone String @default("")
    address String @default("")
@@ -99,4 +101,14 @@ orderItems OrderItem[]
 
   @@index([orderId])
   @@index([productId])
+ }
+
+ model Client {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  order Order[]
+  name  String?
+  email String  @unique
+  password String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
  }

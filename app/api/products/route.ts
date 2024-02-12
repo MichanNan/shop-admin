@@ -2,15 +2,32 @@ import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 import { getServerSession } from "next-auth";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const session = getServerSession();
     if (!session) {
       return new NextResponse("Please login first!");
     }
+
+    const { searchParams } = new URL(req.url);
+    const categoryId = searchParams.get("categoryId") || undefined;
+    const colorId = searchParams.get("colorId") || undefined;
+    const sizeId = searchParams.get("sizeId") || undefined;
+    const isFeatured = searchParams.get("isFeatured");
+
     const products = await prismadb.product.findMany({
+      where: {
+        categoryId,
+        colorId,
+        sizeId,
+        isFeatured: isFeatured ? true : undefined,
+        isArchived: false,
+      },
       include: {
         images: true,
+        size: true,
+        color: true,
+        category: true,
       },
     });
     return NextResponse.json(products);

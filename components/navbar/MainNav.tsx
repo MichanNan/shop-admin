@@ -56,7 +56,7 @@ const MainNav: React.FC<MainNavProps> = ({ showNav }) => {
       <nav
         className={`flex flex-col space-y-6 font-xl pl-8 fixed z-30 w-[12rem] ${
           showNav ? "left-0 bg-white" : "-left-full"
-        } md:static md:mt-5 md:flex-row transition-all`}
+        } md:static md:mt-5 md:flex-col transition-all`}
       >
         <p className="font-bold mt-5">Welcom, {session?.data?.user?.name}</p>
         {routes.map((route) => (
