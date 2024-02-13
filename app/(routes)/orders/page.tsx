@@ -1,9 +1,9 @@
 import React from "react";
-import prismadb from "@/lib/prismadb";
 import OrderTable from "./components/OrderTable";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { getOrders } from "@/actions/get-total-orders";
 
 const Orders = async () => {
   const session = await getServerSession(authOptions);
@@ -11,11 +11,7 @@ const Orders = async () => {
   if (!session) {
     redirect("/sign-in");
   }
-  const orders = await prismadb.order.findMany({
-    include: { orderItems: true },
-    orderBy: { createdAt: "desc" },
-  });
-
+  const orders = await getOrders();
   return <OrderTable data={orders} />;
 };
 

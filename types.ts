@@ -55,10 +55,4 @@ export interface Order {
 
 export interface Client {
   id: string;
-  irder: Order[];
-  nameL: string;
-  email: string;
-  password: string;
-  createdAt: string;
-  updatedAt: string;
 }

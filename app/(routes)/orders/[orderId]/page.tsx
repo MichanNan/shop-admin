@@ -1,17 +1,17 @@
-import OrderDetail from "@/components/OrderDetail";
+import OrderDetail from "@/app/(routes)/orders/[orderId]/components/OrderDetail";
 
 import React from "react";
 
-import { getOrders } from "@/actions/get-total-orders";
+import { getOrder } from "@/actions/get-total-orders";
 
 interface OrderItemProps {
   params: { orderId: string };
 }
 
 const OrderItem: React.FC<OrderItemProps> = async ({ params }) => {
-  const order = await getOrders(params.orderId);
+  const order = await getOrder(params.orderId);
   if (!order) return;
-
+  console.log(order);
   return <OrderDetail order={order} />;
 };
 

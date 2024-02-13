@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import axios from "axios";
-import OrderDetail from "./OrderDetail";
+import OrderDetail from "../app/(routes)/orders/[orderId]/components/OrderDetail";
 
 interface TableElementProps {
   title: string;

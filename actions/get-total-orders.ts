@@ -1,4 +1,5 @@
 import prismadb from "@/lib/prismadb";
+import axios from "axios";
 
 export const getTotalOrders = async () => {
   const ordersCount = await prismadb.order.count({
@@ -9,12 +10,14 @@ export const getTotalOrders = async () => {
   return ordersCount;
 };
 
-export const getOrders = async (id: string) => {
-  const order = await prismadb.order.findUnique({
-    where: { id: id },
-    include: {
-      orderItems: { include: { product: { include: { images: true } } } },
-    },
-  });
-  return order;
+export const getOrders = async () => {
+  const res = await axios.get("http://localhost:3001/api/orders");
+
+  return res.data;
+};
+
+export const getOrder = async (orderId: string) => {
+  const res = await axios.get(`http://localhost:3001/api/orders/${orderId}`);
+
+  return res.data;
 };

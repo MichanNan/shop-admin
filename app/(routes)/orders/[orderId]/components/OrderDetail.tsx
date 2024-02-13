@@ -1,5 +1,6 @@
 "use client";
 
+import { formatter } from "@/lib/utils";
 import { Order } from "@/types";
 import { ArrowLeft, Check, XCircle } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,10 @@ interface OrderProps {
 
 const OrderDetail: React.FC<OrderProps> = ({ order }) => {
   const router = useRouter();
+
+  const totalPrice = order.orderItems.reduce((total, item) => {
+    return (total += item.amount * parseInt(item.product.price));
+  }, 0);
   return (
     <div className="flex flex-col md:m-10 w-full">
       <div className="flex items-center gap-6 ml-2 mb-2 md:mb-10 md:ml-0">
@@ -48,9 +53,21 @@ const OrderDetail: React.FC<OrderProps> = ({ order }) => {
                   <span>Amount:</span>
                   <span>{item.amount}</span>
                 </div>
-                <div className="flex gap-4">
-                  <span>Pay:</span>
-                  <span>{order.isPaid ? <Check /> : <XCircle />}</span>
+                <div className="flex gap-6">
+                  <div className="flex gap-4">
+                    <span>Total Price</span>
+                    <span> {formatter.format(totalPrice)}</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span>Pay:</span>
+                    <span>
+                      {order.isPaid ? (
+                        <Check className="text-green-600 font-bold" />
+                      ) : (
+                        <XCircle className="text-red-800 font-bold" />
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
