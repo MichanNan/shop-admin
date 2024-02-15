@@ -1,19 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { useRouter } from "next/navigation";
 import TableElement from "@/components/TableElement";
-import { Color } from "@prisma/client";
-import { Separator } from "@/components/ui/separator";
+import { Color } from "@/types";
+import Pagination from "@/components/Pagination";
 
 interface ColorTableProps {
   data: Color[] | null;
 }
 
 const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
+  const [pageStartIndex, setPageStartIndex] = useState(0);
+  const [pageEndIndex, setPageEndIndex] = useState(10);
+
+  if (!data) return;
+
+  const paginatedData = data.slice(pageStartIndex, pageEndIndex);
   const router = useRouter();
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">
@@ -21,8 +27,14 @@ const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
         <Heading title="Colors" description="Manage your colors." />
         <Button onClick={() => router.push("/colors/new")}>Add +</Button>
       </div>
-      <Separator />
-      <TableElement title="colors" data={data} />
+      <Pagination
+        data={data}
+        pageStartIndex={pageStartIndex}
+        pageEndIndex={pageEndIndex}
+        setPageStartIndex={setPageStartIndex}
+        setPageEndIndex={setPageEndIndex}
+      />
+      <TableElement title="colors" data={paginatedData} />
     </div>
   );
 };

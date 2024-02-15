@@ -6,6 +6,7 @@ export async function GET(req: Request) {
   try {
     const orders = await prismadb.order.findMany({
       include: {
+        client: true,
         orderItems: { include: { product: { include: { images: true } } } },
       },
     });

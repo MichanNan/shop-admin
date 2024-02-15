@@ -1,19 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { useRouter } from "next/navigation";
 import TableElement from "@/components/TableElement";
-import { Size } from "@prisma/client";
-import { Separator } from "@/components/ui/separator";
+import { Size } from "@/types";
+import Pagination from "@/components/Pagination";
 
 interface SizeTableProps {
   data: Size[] | null;
 }
 
 const SizeTable: React.FC<SizeTableProps> = ({ data }) => {
+  const [pageStartIndex, setPageStartIndex] = useState(0);
+  const [pageEndIndex, setPageEndIndex] = useState(10);
+
+  if (!data) return;
+
+  const paginatedData = data.slice(pageStartIndex, pageEndIndex);
+
   const router = useRouter();
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">
@@ -21,8 +28,14 @@ const SizeTable: React.FC<SizeTableProps> = ({ data }) => {
         <Heading title="Sizes" description="Manage your sizes." />
         <Button onClick={() => router.push("/sizes/new")}>Add +</Button>
       </div>
-      <Separator />
-      <TableElement title="sizes" data={data} />
+      <Pagination
+        data={data}
+        pageStartIndex={pageStartIndex}
+        pageEndIndex={pageEndIndex}
+        setPageStartIndex={setPageStartIndex}
+        setPageEndIndex={setPageEndIndex}
+      />
+      <TableElement title="sizes" data={paginatedData} />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 export interface Category {
   id: string;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Product {
@@ -13,23 +15,29 @@ export interface Product {
   size: Size;
   color: Color;
   images: Image[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Image {
   id: string;
   url: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Size {
   id: string;
   name: string;
-  value: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Color {
   id: string;
   name: string;
-  value: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface OrderItem {
@@ -50,8 +58,8 @@ export interface Order {
   name: string;
   phone: string;
   address: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Client {
