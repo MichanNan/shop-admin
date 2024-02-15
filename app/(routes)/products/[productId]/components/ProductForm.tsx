@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Category, Color, Image, Product, Size } from "@prisma/client";
+import { Category, Color, Image, Size, Product } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -36,6 +36,7 @@ import * as z from "zod";
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
+  amount: z.coerce.number().min(1).default(1),
   price: z.coerce.number().min(1),
   categoryId: z.string().min(1),
   colorId: z.string(),
@@ -47,7 +48,7 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
-  initialData: (Product & { images: Image[] }) | null;
+  initialData: (Product & { images: Image[] }) | null | undefined;
   categories: Category[];
   colors: Color[];
   sizes: Size[];
@@ -75,11 +76,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     defaultValues: initialData
       ? {
           ...initialData,
+          amount: initialData.amount ?? undefined,
           price: parseFloat(String(initialData?.price)),
         }
       : {
           name: "",
           images: [],
+          amount: 0,
           price: 0,
           categoryId: "",
           colorId: "",
@@ -188,6 +191,24 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <Input
                       disabled={loading}
                       placeholder="product name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Amount</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="product amounte"
                       {...field}
                     />
                   </FormControl>

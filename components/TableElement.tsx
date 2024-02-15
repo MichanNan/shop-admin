@@ -86,6 +86,10 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
               <TableHead className="text-center">Price</TableHead>
             )}
 
+            {dataIsProduct && (
+              <TableHead className="text-center">Amount</TableHead>
+            )}
+
             <TableHead className="text-center">Date</TableHead>
             {!dataIsOrder && (
               <TableHead className="text-center">Actions</TableHead>
@@ -103,13 +107,17 @@ const TableElement: React.FC<TableElementProps> = ({ title, data }) => {
               {dataIsProduct && (
                 <TableCell>{(item as Product).price}</TableCell>
               )}
-
+              {dataIsProduct && (
+                <TableCell>{(item as Product).amount}</TableCell>
+              )}
               <TableCell>{format(item.createdAt, "MMMM do, yyyy")}</TableCell>
-              <TableCell>
-                <Button onClick={() => router.push(`/orders/${item.id}`)}>
-                  details
-                </Button>
-              </TableCell>
+              {dataIsOrder && (
+                <TableCell>
+                  <Button onClick={() => router.push(`/orders/${item.id}`)}>
+                    details
+                  </Button>
+                </TableCell>
+              )}
               <TableCell className="flex gap-2 justify-center">
                 {!dataIsOrder && (
                   <Button

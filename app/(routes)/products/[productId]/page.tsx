@@ -17,6 +17,8 @@ const Product = async ({ params }: { params: { productId: string } }) => {
     });
   }
 
+  console.log(product);
+
   const categories = await prismadb.category.findMany();
 
   const sizes = await prismadb.size.findMany();

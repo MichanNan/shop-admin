@@ -33,6 +33,7 @@ export async function PATCH(
       name,
       images,
       price,
+      amount,
       categoryId,
       sizeId,
       colorId,
@@ -72,6 +73,7 @@ export async function PATCH(
       data: {
         name,
         price: price.toString(),
+        amount,
         categoryId,
         colorId,
         sizeId,
@@ -93,7 +95,6 @@ export async function PATCH(
         },
       },
     });
-    console.log("product", product);
 
     return NextResponse.json(product);
   } catch (error) {

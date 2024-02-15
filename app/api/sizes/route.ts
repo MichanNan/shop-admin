@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 import { getServerSession } from "next-auth";
 
+export async function GET(req: Request) {
+  try {
+    const sizes = await prismadb.size.findMany({});
+    return NextResponse.json(sizes);
+  } catch (error) {
+    console.log("[SIZE_GET]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const session = getServerSession();
