@@ -12,11 +12,11 @@ import Pagination from "@/components/Pagination";
 interface ProductTableProps {
   data: Product[] | null;
 }
-const router = useRouter();
+
 const ProductTable: React.FC<ProductTableProps> = ({ data }) => {
   const [pageStartIndex, setPageStartIndex] = useState(0);
   const [pageEndIndex, setPageEndIndex] = useState(10);
-
+  const router = useRouter();
   if (!data) return;
 
   const paginatedData = data.slice(pageStartIndex, pageEndIndex);

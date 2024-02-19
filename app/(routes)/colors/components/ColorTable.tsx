@@ -12,11 +12,11 @@ import Pagination from "@/components/Pagination";
 interface ColorTableProps {
   data: Color[] | null;
 }
-const router = useRouter();
+
 const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
   const [pageStartIndex, setPageStartIndex] = useState(0);
   const [pageEndIndex, setPageEndIndex] = useState(10);
-
+  const router = useRouter();
   if (!data) return;
 
   const paginatedData = data.slice(pageStartIndex, pageEndIndex);
