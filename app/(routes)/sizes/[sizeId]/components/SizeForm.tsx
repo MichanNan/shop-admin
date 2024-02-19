@@ -31,6 +31,7 @@ interface SizeFormProps {
 }
 
 const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
+  console.log(initialData);
   const [isLoading, setIsLoading] = useState(false);
 
   const title = initialData ? "Edit Size" : "Create Size";
