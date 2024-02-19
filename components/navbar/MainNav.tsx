@@ -14,11 +14,11 @@ interface MainNavProps {
 
 const MainNav: React.FC<MainNavProps> = ({ showNav }) => {
   const session = useSession();
-
+  const pathname = usePathname();
   if (!session) {
     return null;
   }
-  const pathname = usePathname();
+
   const routes = [
     {
       href: `/`,

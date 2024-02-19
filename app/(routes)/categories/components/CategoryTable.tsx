@@ -16,12 +16,12 @@ interface CategoryTableProps {
 const CategoryTable: React.FC<CategoryTableProps> = ({ data }) => {
   const [pageStartIndex, setPageStartIndex] = useState(0);
   const [pageEndIndex, setPageEndIndex] = useState(10);
-
+  const router = useRouter();
   if (!data) return;
   console.log(data);
 
   const paginatedData = data.slice(pageStartIndex, pageEndIndex);
-  const router = useRouter();
+
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">
       <div className=" flex items-center justify-between">

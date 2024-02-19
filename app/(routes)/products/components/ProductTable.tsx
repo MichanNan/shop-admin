@@ -12,7 +12,7 @@ import Pagination from "@/components/Pagination";
 interface ProductTableProps {
   data: Product[] | null;
 }
-
+const router = useRouter();
 const ProductTable: React.FC<ProductTableProps> = ({ data }) => {
   const [pageStartIndex, setPageStartIndex] = useState(0);
   const [pageEndIndex, setPageEndIndex] = useState(10);
@@ -20,7 +20,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ data }) => {
   if (!data) return;
 
   const paginatedData = data.slice(pageStartIndex, pageEndIndex);
-  const router = useRouter();
+
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">
       <div className=" flex items-center justify-between">

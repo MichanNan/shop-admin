@@ -12,7 +12,7 @@ import Pagination from "@/components/Pagination";
 interface ColorTableProps {
   data: Color[] | null;
 }
-
+const router = useRouter();
 const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
   const [pageStartIndex, setPageStartIndex] = useState(0);
   const [pageEndIndex, setPageEndIndex] = useState(10);
@@ -20,7 +20,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ data }) => {
   if (!data) return;
 
   const paginatedData = data.slice(pageStartIndex, pageEndIndex);
-  const router = useRouter();
+
   return (
     <div className="md:mt-10 flex flex-col w-full gap-5 ">
       <div className=" flex items-center justify-between">
