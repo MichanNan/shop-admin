@@ -11,14 +11,14 @@ export const getTotalOrders = async () => {
 };
 
 export const getOrders = async () => {
-  const res = await axios.get(`${process.env.NEXT_AUTH_URL}/api/orders`);
+  const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/orders`);
 
   return res.data;
 };
 
 export const getOrder = async (orderId: string) => {
   const res = await axios.get(
-    `${process.env.NEXT_AUTH_URL}/api/orders/${orderId}`
+    `${process.env.NEXTAUTH_URL}/api/orders/${orderId}`
   );
 
   return res.data;
