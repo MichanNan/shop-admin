@@ -2,8 +2,8 @@ import React from "react";
 import ProductTable from "./components/ProductTable";
 import prismadb from "@/lib/prismadb";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/utils";
 
 const ProductsPage = async () => {
   const session = await getServerSession(authOptions);
