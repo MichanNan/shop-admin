@@ -6,6 +6,7 @@ import { NextAuthOptions } from "next-auth";
 
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { PrismaClient } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,6 +16,8 @@ export const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
+
+const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
   pages: {

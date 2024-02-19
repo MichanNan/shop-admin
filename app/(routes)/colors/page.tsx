@@ -2,8 +2,8 @@ import React from "react";
 import prismadb from "@/lib/prismadb";
 import ColorTable from "./components/ColorTable";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/utils";
 
 const Colors = async () => {
   const session = await getServerSession(authOptions);
