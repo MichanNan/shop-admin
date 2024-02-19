@@ -1,12 +1,11 @@
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getTotalRevenue } from "@/actions/get-total-revenue";
-import { formatter } from "@/lib/utils";
+import { authOptions, formatter } from "@/lib/utils";
 import { getTotalOrders } from "@/actions/get-total-orders";
 
 export default async function HomePage() {
